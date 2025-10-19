@@ -1,0 +1,36 @@
+{
+  "overallOutstanding": 12341233,
+  "metrics": [
+    {"label": "Invoice Received", "total": 2123, "amount": 1234123234, "icon": "invoice"},
+    {"label": "Payable amount", "total": 2123, "amount": 12341233, "icon": "payable"},
+    {"label": "Overdue", "total": 2123, "amount": 12341233, "icon": "overdue"},
+    {"label": "Paid amount", "total": 2123, "amount": 12341233, "icon": "paid"},
+    {"label": "Rejected", "total": 2123, "amount": 1234123234, "icon": "rejected"},
+    {"label": "Dispute", "total": 2123, "amount": 12341233, "icon": "dispute"},
+    {"label": "Department", "total": 2123, "amount": 12341233, "icon": "department"},
+    {"label": "Vendors", "total": 2123, "amount": 12341233, "icon": "vendors"}
+  ],
+  "queuesChart": [
+    {"name": "Processing Queue", "value": 20, "color": "#FF6384"},
+    {"name": "Exception Queue", "value": 30, "color": "#36A2EB"},
+    {"name": "Duplicate Queue", "value": 10, "color": "#FFCE56"},
+    {"name": "Missing PO Queue", "value": 15, "color": "#4BC0C0"},
+    {"name": "Receipt Hold Queue", "value": 15, "color": "#9966FF"},
+    {"name": "Supplier Portal Queue", "value": 10, "color": "#FF9F40"}
+  ],
+  "kpiChart": [
+    {"name": "Role", "value": 30, "color": "#FF6384"},
+    {"name": "Person Responsible", "value": 54, "color": "#36A2EB"},
+    {"name": "Triggers Alert", "value": 26, "color": "#FFCE56"}
+  ],
+  "dueByAgeSummary": [
+    {"days": "7 Days", "amount": 1234234},
+    {"days": "15 Days", "amount": 287313123},
+    {"days": "30 Days", "amount": 1301},
+    {"days": "45 Days", "amount": 12234445},
+    {"days": "60 Days", "amount": 1200},
+    {"days": "90 Days", "amount": 1237234},
+    {"days": "180 Days +", "amount": 122}
+  ],
+  "penaltySavedAmount": 12344
+}
