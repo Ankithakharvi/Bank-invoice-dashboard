@@ -11,7 +11,7 @@ const COLORS = {
 
 // Define constants for sidebar widths (matching the Sidebar component)
 const COLLAPSED_WIDTH = '75px';
-const EXPANDED_WIDTH = '220px';
+const EXPANDED_WIDTH = '100px';
 
 // 🌟 KEY CHANGE: Set the offset padding to zero to start the content immediately after the sidebar.
 const LEFT_OFFSET_PADDING = '-200px'; 
