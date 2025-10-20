@@ -265,7 +265,7 @@ export default function DashboardPage({ pathSegments = ['Dashboard'], searchTerm
                     // NO OUTER BORDER
                     borderRadius: '8px',
                     padding: '12px 16px', 
-                    backgroundColor: '#FFFFFF',
+                    backgroundColor: '#EDF0F4',
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
