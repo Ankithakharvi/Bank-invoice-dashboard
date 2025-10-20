@@ -595,7 +595,8 @@
 //         </>
 //     );
 // }
- import React, { useState, useEffect } from 'react';
+ 
+import React, { useState, useEffect } from 'react';
 import invoicesData from '../../data/invoices.json'; // Assuming this file exists locally
 import { FaSearch } from 'react-icons/fa'; // Import the search icon
 
@@ -791,16 +792,16 @@ export default function InvoiceTable({ searchTerm = '', onSearchChange = () => {
                     Dashboard / <span style={{ color: COLORS.primary, fontWeight: 500 }}>Invoices</span>
                 </div>
 
-                {/* 📅 Calendar (Half Black/Orange Style on Active Day) */}
+                {/* 📅 Calendar (Now Transparent) */}
                 <div style={{ 
-                    border: `1px solid ${COLORS.border}`, 
-                    borderRadius: '8px', 
+                    // 🗑️ Removed border: `1px solid ${COLORS.border}`, 
+                    // 🗑️ Removed backgroundColor: COLORS.background,
                     padding: '8px 12px', 
+                    borderRadius: '8px', 
                     fontSize: '10px',
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    backgroundColor: COLORS.background,
                     flexShrink: 0
                 }}>
                     <div style={{ fontSize: '11px', fontWeight: 600, color: '#555', marginBottom: '4px' }}>{currentMonthName} {currentYear}</div>
@@ -898,7 +899,7 @@ export default function InvoiceTable({ searchTerm = '', onSearchChange = () => {
                     ))}
                 </div>
 
-                {/* 🌟 MODIFIED: Search Container with live input */}
+                {/* Search Container with live input */}
                 <div style={{ 
                     display: 'flex', 
                     alignItems: 'center', 
@@ -914,7 +915,7 @@ export default function InvoiceTable({ searchTerm = '', onSearchChange = () => {
                         type="text"
                         placeholder="Search invoices..."
                         value={searchTerm}
-                        onChange={(e) => onSearchChange(e.target.value)} // 🌟 Removed readOnly and added onChange
+                        onChange={(e) => onSearchChange(e.target.value)} 
                         style={{
                             flexGrow: 1,
                             border: 'none',
