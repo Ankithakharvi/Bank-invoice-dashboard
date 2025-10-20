@@ -10,7 +10,8 @@
 
 // const TOPBAR_HEIGHT = '64px'; 
 
-// function MainLayout({ children, isSidebarCollapsed, toggleSidebar, sidebarWidth }) {
+// // MainLayout now accepts search-related props
+// function MainLayout({ children, isSidebarCollapsed, toggleSidebar, sidebarWidth, onSearchChange, searchTerm }) {
 //     const contentWrapperStyle = {
 //         marginLeft: sidebarWidth,
 //         flexGrow: 1,
@@ -24,7 +25,12 @@
 //     return (
 //         <div style={{ display: "flex", minHeight: "100vh" }}>
 //             <Sidebar isCollapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} />
-//             <TopBar toggleSidebar={toggleSidebar} isCollapsed={isSidebarCollapsed} />
+//             {/* 🌟 Pass the search handler function to the TopBar */}
+//             <TopBar 
+//                 toggleSidebar={toggleSidebar} 
+//                 isCollapsed={isSidebarCollapsed} 
+//                 onSearchChange={onSearchChange} 
+//             />
 
 //             <div style={contentWrapperStyle}>
 //                 <div style={{ 
@@ -32,7 +38,10 @@
 //                     paddingTop: `calc(32px + ${TOPBAR_HEIGHT})`,
 //                     flex: 1
 //                 }}>
-//                     {children}
+//                     {/* 🌟 Clone children and pass the search term down to them */}
+//                     {React.Children.map(children, child => 
+//                         React.cloneElement(child, { searchTerm })
+//                     )}
 //                 </div>
 //             </div>
 //         </div>
@@ -40,10 +49,17 @@
 // }
 
 // export default function App() {
-//     const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true); // default collapsed
+//     const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true); 
+//     // 🌟 New: State to manage the global search term
+//     const [globalSearchTerm, setGlobalSearchTerm] = useState(''); 
 
 //     const toggleSidebar = () => {
 //         setIsSidebarCollapsed(prev => !prev);
+//     };
+
+//     // 🌟 New: Handler function to receive the search term from TopBar
+//     const handleSearchChange = (term) => {
+//         setGlobalSearchTerm(term);
 //     };
 
 //     const sidebarWidth = isSidebarCollapsed ? '75px' : '220px';
@@ -58,6 +74,9 @@
 //                             isSidebarCollapsed={isSidebarCollapsed} 
 //                             toggleSidebar={toggleSidebar}
 //                             sidebarWidth={sidebarWidth}
+//                             // 🌟 Pass handler and current search term
+//                             onSearchChange={handleSearchChange}
+//                             searchTerm={globalSearchTerm}
 //                         >
 //                             <DashboardPage />
 //                         </MainLayout>
@@ -70,6 +89,9 @@
 //                             isSidebarCollapsed={isSidebarCollapsed} 
 //                             toggleSidebar={toggleSidebar}
 //                             sidebarWidth={sidebarWidth}
+//                             // 🌟 Pass handler and current search term
+//                             onSearchChange={handleSearchChange}
+//                             searchTerm={globalSearchTerm}
 //                         >
 //                             <InvoiceTable />
 //                         </MainLayout>
@@ -79,6 +101,8 @@
 //         </Router>
 //     );
 // }
+// App.js
+
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
@@ -105,11 +129,11 @@ function MainLayout({ children, isSidebarCollapsed, toggleSidebar, sidebarWidth,
     return (
         <div style={{ display: "flex", minHeight: "100vh" }}>
             <Sidebar isCollapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} />
-            {/* 🌟 Pass the search handler function to the TopBar */}
+            {/* 🌟 PASS THE SEARCH HANDLER TO THE TopBar */}
             <TopBar 
                 toggleSidebar={toggleSidebar} 
                 isCollapsed={isSidebarCollapsed} 
-                onSearchChange={onSearchChange} 
+                onSearchChange={onSearchChange} // <-- PASSES HANDLER
             />
 
             <div style={contentWrapperStyle}>
@@ -118,9 +142,9 @@ function MainLayout({ children, isSidebarCollapsed, toggleSidebar, sidebarWidth,
                     paddingTop: `calc(32px + ${TOPBAR_HEIGHT})`,
                     flex: 1
                 }}>
-                    {/* 🌟 Clone children and pass the search term down to them */}
+                    {/* 🌟 Clone children and PASS THE SEARCH TERM down to them */}
                     {React.Children.map(children, child => 
-                        React.cloneElement(child, { searchTerm })
+                        React.cloneElement(child, { searchTerm }) // <-- PASSES SEARCH TERM
                     )}
                 </div>
             </div>
@@ -130,14 +154,14 @@ function MainLayout({ children, isSidebarCollapsed, toggleSidebar, sidebarWidth,
 
 export default function App() {
     const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true); 
-    // 🌟 New: State to manage the global search term
+    // 🌟 GLOBAL SEARCH STATE
     const [globalSearchTerm, setGlobalSearchTerm] = useState(''); 
 
     const toggleSidebar = () => {
         setIsSidebarCollapsed(prev => !prev);
     };
 
-    // 🌟 New: Handler function to receive the search term from TopBar
+    // 🌟 HANDLER FUNCTION
     const handleSearchChange = (term) => {
         setGlobalSearchTerm(term);
     };
@@ -154,7 +178,6 @@ export default function App() {
                             isSidebarCollapsed={isSidebarCollapsed} 
                             toggleSidebar={toggleSidebar}
                             sidebarWidth={sidebarWidth}
-                            // 🌟 Pass handler and current search term
                             onSearchChange={handleSearchChange}
                             searchTerm={globalSearchTerm}
                         >
@@ -169,7 +192,6 @@ export default function App() {
                             isSidebarCollapsed={isSidebarCollapsed} 
                             toggleSidebar={toggleSidebar}
                             sidebarWidth={sidebarWidth}
-                            // 🌟 Pass handler and current search term
                             onSearchChange={handleSearchChange}
                             searchTerm={globalSearchTerm}
                         >
