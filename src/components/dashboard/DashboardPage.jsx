@@ -160,7 +160,7 @@
 //         </div>
 //     );
 // }
- // DashboardPage.jsx
+ // components/dashboard/DashboardPage.jsx
 
 import React, { useState } from 'react';
 import data from "../../data/dashboardData.json"; 
@@ -187,7 +187,7 @@ const initialMetricData = data.metrics.map(metric => ({
     iconColor: metricIconColorMap[metric.label]?.color
 }));
 
-// Static UI data (OK to hardcode)
+// Static UI data 
 const calendarData = {
     month: "October 2025",
     days: [ 19,20,21,22,23,24,25],
@@ -196,19 +196,19 @@ const calendarData = {
 
 const COLORS = {
     text: '#555555',
-    calendarDayActive: '#FFA741',
+    calendarDayActive: '#F48722', // Orange for the highlight
     border: '#E0E0E0',
     primary: '#007bff',
     highlightBg: '#E8F5FF',
     highlightText: '#1F2439',
 };
 
-// 🌟 KEY CHANGE: Accept searchTerm prop
+
 export default function DashboardPage({ pathSegments = ['Dashboard'], searchTerm = '' }) {
 
     // Component state and static text variables
     const today = new Date().getDate();
-    const [activeDay, setActiveDay] = useState(today);
+    const [activeDay, setActiveDay] = useState(today); // Today is active by default
 
     const breadcrumb = pathSegments.join(' / ') + ' /';
     const mainTitle = pathSegments[pathSegments.length - 1];
@@ -216,15 +216,15 @@ export default function DashboardPage({ pathSegments = ['Dashboard'], searchTerm
     // 4. Use the overallOutstanding value from the JSON
     const outstandingMetric = { 
         label: "Over all outstanding", 
-        // Ensure the number is formatted for display
         amount: data.overallOutstanding ? data.overallOutstanding.toLocaleString('en-IN') : 'N/A' 
     };
 
-    // 🌟 FILTER LOGIC: Filter metrics based on the global search term
+    // FILTER LOGIC: Filter metrics based on the global search term
     const lowerSearchTerm = searchTerm.toLowerCase().trim();
 
     const filteredMetricData = initialMetricData.filter(metric => {
-        // Check if the metric label, amount, or total includes the search term
+        if (lowerSearchTerm === '') return true; 
+        
         const amountString = String(metric.amount || '');
         const totalString = String(metric.total || '');
 
@@ -238,18 +238,15 @@ export default function DashboardPage({ pathSegments = ['Dashboard'], searchTerm
 
 
     return (
-        // NOTE: Changed padding back to a reasonable value (32px) as 3px was too small.
         <div style={{ padding: "32px", backgroundColor: '#EDF0F4', minHeight: '100vh' }}>
             
             {/* TOP HEADER */}
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "32px" }}>
                 <div>
                     <span style={{ fontSize: "12px", color: COLORS.text }}>{breadcrumb}</span>
-                    {/* NOTE: Adjusted margin back to 4px from 10px for better vertical rhythm */}
                     <h2 style={{ fontSize: "32px", fontWeight: 700, color: "#141414", marginTop: "4px"}}>{mainTitle}</h2>
-                    {/* Overall Outstanding Metric - Uses JSON data */}
+                    {/* Overall Outstanding Metric */}
                     <div style={{
-                        // NOTE: Adjusted margin back to 20px from 30px
                         marginTop: '20px', 
                         padding: '12px 16px',
                         borderRadius: '8px',
@@ -263,29 +260,63 @@ export default function DashboardPage({ pathSegments = ['Dashboard'], searchTerm
                     </div>
                 </div>
 
-                {/* Calendar (Static UI) - UNCHANGED */}
+                {/* 📅 Calendar - FINAL REVISED DESIGN */}
                 <div style={{
-                    border: `1px solid ${COLORS.border}`,
+                    // NO OUTER BORDER
                     borderRadius: '8px',
-                    padding: '12px',
+                    padding: '12px 16px', 
                     backgroundColor: '#FFFFFF',
                     display: 'flex',
                     flexDirection: 'column',
-                    alignItems: 'center'
+                    alignItems: 'center',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.05)' 
                 }}>
-                    <div style={{ fontSize: '12px', fontWeight: 600, color: COLORS.text, marginBottom: '8px' }}>{calendarData.month}</div>
+                    <div style={{ 
+                        fontSize: '12px', 
+                        fontWeight: 600, 
+                        color: '#141414', 
+                        marginBottom: '10px' 
+                    }}>{calendarData.month}</div>
 
                     {/* Weekday row */}
-                    <div style={{ display: 'flex', gap: '6px', marginBottom: '4px' }}>
-                        {calendarData.dayNames.map((d, idx) => (
-                            <div key={idx} style={{ width: '28px', textAlign: 'center', fontSize: '8px', fontWeight: 600, color: COLORS.text }}>{d}</div>
-                        ))}
+                    <div style={{ display: 'flex', gap: '8px', marginBottom: '6px' }}>
+                        {calendarData.dayNames.map((d, idx) => {
+                            // Check if the current day name corresponds to the active date's day of the week
+                            // Note: This relies on your static calendarData arrays being aligned correctly.
+                            const correspondingDay = calendarData.days[idx];
+                            const isDayActive = correspondingDay === activeDay;
+
+                            return (
+                                <div 
+                                    key={idx} 
+                                    style={{ 
+                                        width: '28px', 
+                                        textAlign: 'center', 
+                                        fontSize: '10px', 
+                                        fontWeight: isDayActive ? 700 : 500, // Bold the active day name
+                                        // 🌟 HIGHLIGHT ACTIVE DAY NAME IN ORANGE
+                                        color: isDayActive ? COLORS.calendarDayActive : COLORS.text 
+                                    }}
+                                >
+                                    {d}
+                                </div>
+                            );
+                        })}
                     </div>
 
                     {/* Dates row */}
-                    <div style={{ display: 'flex', gap: '6px' }}>
+                    <div style={{ display: 'flex', gap: '8px' }}>
                         {calendarData.days.map((day) => {
                             const isActive = day === activeDay;
+                            
+                            // 🌟 UNIQUE SPLIT-COLOR BACKGROUND STYLE
+                            const activeBackgroundStyle = {
+                                // Orange (top half, 50%) and Black (bottom half, 50%)
+                                background: `conic-gradient(from 0deg, ${COLORS.calendarDayActive} 0% 50%, black 50% 100%)`, 
+                                color: '#FFFFFF', 
+                                border: 'none',
+                            };
+
                             return (
                                 <div key={day} onClick={() => setActiveDay(day)}
                                     style={{
@@ -296,11 +327,18 @@ export default function DashboardPage({ pathSegments = ['Dashboard'], searchTerm
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'center',
-                                        fontSize: '10px',
+                                        fontSize: '12px', 
                                         fontWeight: 700,
-                                        color: isActive ? '#000' : COLORS.text,
-                                        background: isActive ? COLORS.calendarDayActive : 'transparent',
-                                        border: isActive ? 'none' : `1px solid ${COLORS.border}`
+                                        
+                                        // Apply the split style if active, else transparent
+                                        ...(isActive ? activeBackgroundStyle : { 
+                                            background: 'transparent',
+                                            color: '#141414', 
+                                            border: `1px solid ${COLORS.border}`
+                                        }),
+                                        
+                                        transition: 'all 0.2s ease-in-out',
+                                        boxSizing: 'border-box'
                                     }}
                                 >
                                     {day}
@@ -313,7 +351,7 @@ export default function DashboardPage({ pathSegments = ['Dashboard'], searchTerm
 
             {/* Metric Cards - Uses FILTERED metric data */}
             <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "24px" }}>
-                {filteredMetricData.map((m, idx) => ( // 🌟 USING filteredMetricData
+                {filteredMetricData.map((m, idx) => ( 
                     <MetricCard key={idx} 
                         label={m.label} 
                         total={m.total} 
