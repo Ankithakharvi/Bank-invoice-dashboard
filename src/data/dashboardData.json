@@ -43,6 +43,7 @@
             "amount": 7000000,
             "icon": "department"
         },
+        
         {
             "label": "Vendors",
             "total": 3500,
